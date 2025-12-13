@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Unlimited Landing Pages with AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            top: 50%;
+            right: -150px;
+            animation-delay: 5s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            bottom: -100px;
+            left: 30%;
+            animation-delay: 10s;
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(102, 126, 234, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(102, 126, 234, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 50%;
+            animation: particle-float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-50px, 100px) scale(0.9); }
+        }
+
+        @keyframes particle-float {
+            0%, 100% { 
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .price-tag {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ffd89b, #19547b);
+            border: none;
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: #fff;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .nav-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 120px 0 80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease, pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 28px;
+            animation: fadeInUp 0.8s ease;
+            letter-spacing: -2px;
+        }
+
+        .hero .highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            animation: underline-grow 1s ease 0.5s both;
+        }
+
+        @keyframes underline-grow {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .hero .subtitle {
+            font-size: 26px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s both;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .hero .description {
+            font-size: 18px;
+            opacity: 0.7;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            animation: fadeInUp 0.8s ease 0.3s both;
+            line-height: 1.6;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .cta-primary {
+            padding: 20px 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-primary:hover::before {
+            left: 100%;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.5);
+        }
+
+        .cta-secondary {
+            padding: 20px 50px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .cta-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .how-it-works {
+            padding: 100px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 20px;
+            opacity: 0.7;
+            margin-bottom: 70px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-top: 60px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .step:hover::before {
+            opacity: 1;
+        }
+
+        .step:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-10px);
+        }
+
+        .step-number {
+            display: inline-block;
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            line-height: 1;
+            opacity: 0.3;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover .step-number {
+            opacity: 0.5;
+            transform: scale(1.1);
+        }
+
+        .step-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .step-desc {
+            font-size: 16px;
+            opacity: 0.8;
+            line-height: 1.7;
+        }
+
+        .benefits {
+            padding: 100px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .benefit-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+        }
+
+        .benefit-card:hover::before {
+            left: 100%;
+        }
+
+        .benefit-card:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .benefit-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .benefit-desc {
+            font-size: 15px;
+            opacity: 0.8;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .method {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .method::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.05) 49%, rgba(255, 255, 255, 0.05) 51%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(255, 255, 255, 0.05) 49%, rgba(255, 255, 255, 0.05) 51%, transparent 52%);
+            background-size: 30px 30px;
+            animation: move-bg 20s linear infinite;
+        }
+
+        @keyframes move-bg {
+            0% { background-position: 0 0; }
+            100% { background-position: 30px 30px; }
+        }
+
+        .method-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .method h2 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .method p {
+            font-size: 22px;
+            margin-bottom: 20px;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .method-box {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 50px;
+            margin-top: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .method-box h3 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .method-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .method-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .method-feature:hover {
+            transform: translateX(10px);
+        }
+
+        .method-feature-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .method-feature-text h4 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .method-feature-text p {
+            font-size: 15px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .cta-section {
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-section h2 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .cta-section p {
+            font-size: 22px;
+            opacity: 0.8;
+            margin-bottom: 50px;
+        }
+
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            opacity: 0.6;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero .subtitle {
+                font-size: 20px;
+            }
+
+            .hero .description {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            .method h2, .cta-section h2 {
+                font-size: 36px;
+            }
+
+            .method p, .cta-section p {
+                font-size: 18px;
+            }
+
+            .cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-primary, .cta-secondary {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .orb-1, .orb-2, .orb-3 {
+                width: 300px;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <nav class="container">
+            <div class="logo">LandingBot AI</div>
+            <div class="price-tag">Only $17</div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="badge">✨ The Future of Landing Page Creation</div>
+            <h1>Build <span class="highlight">Unlimited</span><br>Landing Pages</h1>
+            <p class="subtitle">One Powerful AI Bot That Creates Professional, High-Converting Pages</p>
+            <p class="description">Stop paying thousands for designers. Stop wasting hours with drag-and-drop builders. Let our AI bot create stunning, conversion-optimized landing pages in seconds.</p>
+            <div class="cta-group">
+                <button class="cta-secondary">Check The Demos</button>
+                <button class="cta-primary">Buy Now - $17</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Three simple steps to professional landing pages</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Describe Your Page</h3>
+                    <p class="step-desc">Tell our AI bot what you need. Your product, target audience, and goals. That's it.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">AI Creates Your Page</h3>
+                    <p class="step-desc">Our intelligent bot analyzes your input and generates a complete, professional landing page in seconds.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Publish & Convert</h3>
+                    <p class="step-desc">Review, customize if needed, and publish instantly. Start converting visitors immediately.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits">
+        <div class="container">
+            <h2 class="section-title">Why This Changes Everything</h2>
+            <p class="section-subtitle">The smartest way to build landing pages</p>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <span class="benefit-icon">♾️</span>
+                    <h3 class="benefit-title">Truly Unlimited</h3>
+                    <p class="benefit-desc">Create as many landing pages as you want. No caps, no extra fees. Scale your campaigns freely.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">⚡</span>
+                    <h3 class="benefit-title">Lightning Fast</h3>
+                    <p class="benefit-desc">What used to take days now takes seconds. Launch campaigns faster than your competition.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">🎯</span>
+                    <h3 class="benefit-title">Conversion Focused</h3>
+                    <p class="benefit-desc">Every page is built using proven conversion principles and psychological triggers.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">💎</span>
+                    <h3 class="benefit-title">Professional Quality</h3>
+                    <p class="benefit-desc">Get designer-level quality without hiring a designer. Each page looks premium and polished.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">🧠</span>
+                    <h3 class="benefit-title">Smart AI</h3>
+                    <p class="benefit-desc">Our bot learns from thousands of high-converting pages to create winners every time.</p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">💰</span>
+                    <h3 class="benefit-title">Save Thousands</h3>
+                    <p class="benefit-desc">Stop paying $2,000+ per landing page. Get unlimited pages for one flat fee.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="method">
+        <div class="container">
+            <div class="method-content">
+                <h2>The Method Behind The Magic</h2>
+                <p>Our AI bot doesn't just generate pages—it understands conversion psychology, design principles, and your specific business needs.</p>
+                <div class="method-box">
+                    <h3>What Makes Our Bot Different</h3>
+                    <div class="method-features">
+                        <div class="method-feature">
+                            <div class="method-feature-icon">🎨</div>
+                            <div class="method-feature-text">
+                                <h4>Design Intelligence</h4>
+                                <p>Trained on thousands of high-converting pages across industries</p>
+                            </div>
+                        </div>
+                        <div class="method-feature">
+                            <div class="method-feature-icon">📝</div>
+                            <div class="method-feature-text">
+                                <h4>Copywriting Engine</h4>
+                                <p>Generates compelling headlines and persuasive copy automatically</p>
+                            </div>
+                        </div>
+                        <div class="method-feature">
+                            <div class="method-feature-icon">🎯</div>
+                            <div class="method-feature-text">
+                                <h4>Conversion Optimization</h4>
+                                <p>Built-in best practices for CTAs, layouts, and user flow</p>
+                            </div>
+                        </div>
+                        <div class="method-feature">
+                            <div class="method-feature-icon">📱</div>
+                            <div class="method-feature-text">
+                                <h4>Mobile-First</h4>
+                                <p>Every page perfect on any device, automatically responsive</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Build Unlimited Landing Pages?</h2>
+            <p>Join thousands of marketers who've ditched expensive designers and slow builders</p>
+            <div class="cta-group">
+                <button class="cta-primary">Buy Now - $17</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 LandingBot AI. Built to help you convert better.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Button interaction effects
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const cards = document.querySelectorAll('.step, .benefit-card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.animation = 'fadeInUp 0.6s ease both';
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => observer.observe(card));
+
+        // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const orbs = document.querySelectorAll('.gradient-orb');
+            orbs.forEach((orb, index) => {
+                const speed = 0.5 + (index * 0.1);
+                orb.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
